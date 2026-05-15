@@ -1,20 +1,14 @@
-# Project 01: LED Button Control
+# Project 01: Manual LED Circuit
 
 ### Description
-A fundamental embedded systems project demonstrating digital input/output handling. The system toggles an LED state based on physical button interaction.
+A hardware-only project demonstrating a basic electrical circuit. This setup uses a physical momentary switch to control the flow of electricity to an LED.
 
-### Features
-* **Digital Input:** Momentary push button.
-* **Digital Output:** LED activation.
-* **Circuit Protection:** Current-limiting resistor for the LED.
+### Engineering Concepts
+* **Current Limiting:** Use of a resistor to protect the LED from overcurrent.
+* **Circuit Continuity:** Understanding open vs. closed loop states.
 
-### Hardware Components
-* Arduino Uno
-* 1x LED (Red)
-* 1x 220 Ohm Resistor
-* 1x Push Button
-* Jumper Wires & Breadboard
+### Components
+* Power Source (Arduino 5V/GND)
+* LED & Resistor
+* Push Button
 
-### Circuit Logic (I/O)
-* **Input:** Pin 2 (Pull-down configuration)
-* **Output:** Pin 13 (Built-in or external LED)
