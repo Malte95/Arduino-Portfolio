@@ -12,3 +12,5 @@ A hardware-only project demonstrating a basic electrical circuit. This setup use
 * LED & Resistor
 * Push Button
 
+![Demo Video](demo.mp4.MOV)
+
