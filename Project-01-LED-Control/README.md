@@ -16,7 +16,9 @@ A hardware-only project demonstrating fundamental electrical circuit configurati
 * 2x Push Buttons (Momentary Tactile Switches)
 * Breadboard & Jumper Wires
 
-![Demo Video](demo.mp4.MOV)
-![Demo Video](demo.mp4#2.MOV)
-![Demo Video](demo.mp4#3.MOV)
+### Media / Demonstrations
+<video src="demo.mp4.MOV" width="320" controls></video>
+<video src="demo.mp4#2.MOV" width="320" controls></video>
+<video src="demo.mp4#3.MOV" width="320" controls></video>
+
 
