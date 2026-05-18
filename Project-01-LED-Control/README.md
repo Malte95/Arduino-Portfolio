@@ -21,8 +21,8 @@ A hardware-only project demonstrating fundamental electrical circuit configurati
 👉 *Click on the links below to watch the demonstration videos.*
 
 * [Watch  Circuit Demo](./demo.mp4.MOV)
-* [Watch Series Circuit Demo 1](./demo.mp4_2.MOV)
-* [Watch Parallel Circuit Demo 2](./demo.mp4_3.MOV)
+* [Watch Series Circuit Demo](./demo.mp4_2.MOV)
+* [Watch Parallel Circuit Demo](./demo.mp4_3.MOV)
 
 
 
