@@ -17,4 +17,6 @@ A hardware-only project demonstrating fundamental electrical circuit configurati
 * Breadboard & Jumper Wires
 
 ![Demo Video](demo.mp4.MOV)
+![Demo Video](demo.mp4#2.MOV)
+![Demo Video](demo.mp4#3.MOV)
 
