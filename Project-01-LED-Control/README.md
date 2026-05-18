@@ -22,9 +22,10 @@ A hardware-only project demonstrating fundamental electrical circuit configurati
 
 [![Series Circuit Demo](https://placeholders.dev)](demo.mp4.MOV)
 
-[![Parallel Circuit Demo 1](https://placeholders.dev)](demo.mp4.MOV)
+[![Parallel Circuit Demo 1](https://placeholders.dev)](demo.mp4_2.MOV)
 
-[![Parallel Circuit Demo 2](https://placeholders.dev)](demo.mp4.MOV)
+[![Parallel Circuit Demo 2](https://placeholders.dev)](demo.mp4_3.MOV)
+
 
 
 
