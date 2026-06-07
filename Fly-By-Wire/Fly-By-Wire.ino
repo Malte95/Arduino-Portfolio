@@ -1,3 +1,7 @@
+#include <Servo.h>
+
+Servo gearServo;
+
 const int buttonPin = 2;
 
 const int redLedPin = 4;
@@ -26,11 +30,16 @@ int speedKnots = 0;
 GearState gearState = GEAR_RETRACTED;
 
 void setup() {
+  Serial.begin(9600);
+
   pinMode(buttonPin, INPUT_PULLUP);
 
   pinMode(redLedPin, OUTPUT);
   pinMode(yellowLedPin, OUTPUT);
   pinMode(greenLedPin, OUTPUT);
+
+  gearServo.attach(servoPin);
+  gearServo.write(gearAngle);
 }
 
 void loop() {
@@ -40,8 +49,62 @@ void loop() {
   speedKnots = map(potentiometerState, 0, 1023, 0, 250);
 
   if (lastButtonState == HIGH && buttonState == LOW) {
-    //Button was pressed
+    if (gearState == GEAR_RETRACTED) {
+      gearState = GEAR_EXTENDING;
+      gearTargetAngle = 180;
+      
+    }
+    else if (gearState == GEAR_EXTENDED) {
+      if (speedKnots > 20) {
+        gearState = GEAR_RETRACTING;
+        gearTargetAngle = 0;
+      }
+      else {
+        Serial.println("GEAR RETRACT BLOCKED");
+      }
+    }
   }
+  if (gearState == GEAR_EXTENDING) {
+
+    if (millis() - lastMoveTime >= moveInterval) {
+
+        gearAngle += stepSize;
+        gearServo.write(gearAngle);
+
+        if (gearAngle >= gearTargetAngle) {
+
+            gearAngle = gearTargetAngle;
+            gearServo.write(gearAngle);
+            gearState = GEAR_EXTENDED;
+        }
+
+        lastMoveTime = millis();
+    }
+}
+  if (gearState == GEAR_RETRACTING) {
+    if (millis() - lastMoveTime >= moveInterval) {
+
+      gearAngle -= stepSize;
+      gearServo.write(gearAngle);
+
+      if (gearAngle <= gearTargetAngle) {
+
+          gearAngle = gearTargetAngle;
+          gearServo.write(gearAngle);
+          gearState = GEAR_RETRACTED;
+      }
+
+      lastMoveTime = millis();
+    }
+  }
+
+  void updateLeds() {
+    if (gearState == GEAR_RETRACTED) {
+        digitalWrite(redLedPin, HIGH);
+        digitalWrite(yellowLedPin, LOW);
+        digitalWrite(greenLedPin, LOW);
+    }
+}
 
   lastButtonState = buttonState;
 }
