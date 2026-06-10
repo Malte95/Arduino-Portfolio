@@ -32,6 +32,13 @@ int lastButtonState = HIGH;
 
 int speedKnots = 0;
 
+const unsigned long maxGearMoveTime = 8000;
+unsigned long gearMoveStartTime = 0;
+
+const unsigned long faultBlinkInterval = 500;
+unsigned long lastFaultBlinkTime = 0;
+bool faultLedOn = false;
+
 GearState gearState = GEAR_RETRACTED;
 
 void handleGearButtonPress() {
@@ -40,6 +47,7 @@ void handleGearButtonPress() {
 
     gearState = GEAR_EXTENDING;
     gearTargetAngle = 180;
+    gearMoveStartTime = millis();
 
   }
   else if (gearState == GEAR_EXTENDED) {
@@ -48,6 +56,7 @@ void handleGearButtonPress() {
 
       gearState = GEAR_RETRACTING;
       gearTargetAngle = 0;
+      gearMoveStartTime = millis();
 
     }
     else {
@@ -58,9 +67,19 @@ void handleGearButtonPress() {
   }
 }
 
+void enterFaultState(String message) {
+  gearState = GEAR_FAULT;
+  Serial.println(message);
+}
+
 void updateGearMovement() {
 
   if (gearState == GEAR_EXTENDING) {
+
+    if (millis() - gearMoveStartTime > maxGearMoveTime) {
+      enterFaultState("GEAR FAULT: MOVEMENT TIMEOUT");
+      return;
+    }
 
     if (millis() - lastMoveTime >= moveInterval) {
 
@@ -84,6 +103,11 @@ void updateGearMovement() {
   }
 
   else if (gearState == GEAR_RETRACTING) {
+
+    if (millis() - gearMoveStartTime > maxGearMoveTime) {
+      enterFaultState("GEAR FAULT: MOVEMENT TIMEOUT");
+      return;
+    }
 
     if (millis() - lastMoveTime >= moveInterval) {
 
@@ -148,6 +172,23 @@ void updateLeds() {
     digitalWrite(greenLedPin, LOW);
 
   }
+else if (gearState == GEAR_FAULT) {
+  if (millis() - lastFaultBlinkTime >= faultBlinkInterval) {
+    faultLedOn = !faultLedOn;
+    lastFaultBlinkTime = millis();
+  }
+
+  if (faultLedOn) {
+    digitalWrite(redLedPin, HIGH);
+    digitalWrite(yellowLedPin, HIGH);
+    digitalWrite(greenLedPin, LOW);
+  }
+  else {
+    digitalWrite(redLedPin, LOW);
+    digitalWrite(yellowLedPin, LOW);
+    digitalWrite(greenLedPin, LOW);
+  }
+}
 }
 
 void setup() {
