@@ -3,6 +3,7 @@
 Servo gearServo;
 
 const int buttonPin = 2;
+const int resetButtonPin = 3;
 
 const int redLedPin = 4;
 const int yellowLedPin = 6;
@@ -29,10 +30,12 @@ unsigned long lastMoveTime = 0;
 
 int buttonState = HIGH;
 int lastButtonState = HIGH;
+int resetButtonState = HIGH;
+int lastResetButtonState = HIGH;
 
 int speedKnots = 0;
 
-const unsigned long maxGearMoveTime = 8000;
+const unsigned long maxGearMoveTime = 2000;
 unsigned long gearMoveStartTime = 0;
 
 const unsigned long faultBlinkInterval = 500;
@@ -52,7 +55,7 @@ void handleGearButtonPress() {
   }
   else if (gearState == GEAR_EXTENDED) {
 
-    if (speedKnots > 20) {
+    if (speedKnots < 20) {
 
       gearState = GEAR_RETRACTING;
       gearTargetAngle = 0;
@@ -63,6 +66,20 @@ void handleGearButtonPress() {
 
       Serial.println("GEAR RETRACT BLOCKED");
 
+    }
+  }
+}
+
+void resetGearButtonPress() {
+  if (gearState == GEAR_FAULT) {
+    if (gearAngle >= 180) {
+      gearState = GEAR_EXTENDED;
+    }
+    else if (gearAngle <= 0) {
+      gearState = GEAR_RETRACTED;
+    }
+    else {
+      Serial.println("RESET FAILED: GEAR POSITION UNKNOWN");
     }
   }
 }
@@ -134,6 +151,7 @@ void updateGearMovement() {
 void readInputs() {
 
   buttonState = digitalRead(buttonPin);
+  resetButtonState = digitalRead(resetButtonPin);
 
   int potentiometerState = analogRead(potentiometerPin);
 
@@ -196,6 +214,7 @@ void setup() {
   Serial.begin(9600);
 
   pinMode(buttonPin, INPUT_PULLUP);
+  pinMode(resetButtonPin, INPUT_PULLUP);
 
   pinMode(redLedPin, OUTPUT);
   pinMode(yellowLedPin, OUTPUT);
@@ -217,10 +236,16 @@ void loop() {
     handleGearButtonPress();
   }
 
+  if (lastResetButtonState == HIGH &&
+       resetButtonState == LOW) {
+        resetGearButtonPress();
+       }
+
   updateGearMovement();
 
   updateLeds();
 
   lastButtonState = buttonState;
+  lastResetButtonState = resetButtonState;
 }
 
