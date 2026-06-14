@@ -34,8 +34,9 @@ int resetButtonState = HIGH;
 int lastResetButtonState = HIGH;
 
 int speedKnots = 0;
+int lastSpeedKnots = 0;
 
-const unsigned long maxGearMoveTime = 2000;
+const unsigned long maxGearMoveTime = 8000;
 unsigned long gearMoveStartTime = 0;
 
 const unsigned long faultBlinkInterval = 500;
@@ -43,6 +44,13 @@ unsigned long lastFaultBlinkTime = 0;
 bool faultLedOn = false;
 
 GearState gearState = GEAR_RETRACTED;
+
+bool retractBlockedWarning = false;
+unsigned long warningStartTime = 0;
+const unsigned long warningDuration = 2000;
+const unsigned long warningBlinkInterval = 250;
+unsigned long lastWarningBlinkTime = 0;
+bool warningLedOn = false;
 
 void handleGearButtonPress() {
 
@@ -55,7 +63,7 @@ void handleGearButtonPress() {
   }
   else if (gearState == GEAR_EXTENDED) {
 
-    if (speedKnots < 20) {
+    if (speedKnots > 20) {
 
       gearState = GEAR_RETRACTING;
       gearTargetAngle = 0;
@@ -65,6 +73,10 @@ void handleGearButtonPress() {
     else {
 
       Serial.println("GEAR RETRACT BLOCKED");
+
+      retractBlockedWarning = true;
+      warningStartTime = millis();
+      lastWarningBlinkTime = millis();
 
     }
   }
@@ -148,25 +160,50 @@ void updateGearMovement() {
   }
 }
 
+void updateAirspeed() {
+  int potentiometerState = analogRead(potentiometerPin);
+
+  speedKnots = map(potentiometerState, 0, 1023, 0, 250);
+
+  if (speedKnots != lastSpeedKnots) {
+    Serial.println(speedKnots);
+    lastSpeedKnots = speedKnots;
+  }
+}
+
 void readInputs() {
 
   buttonState = digitalRead(buttonPin);
   resetButtonState = digitalRead(resetButtonPin);
-
-  int potentiometerState = analogRead(potentiometerPin);
-
-  speedKnots = map(
-    potentiometerState,
-    0,
-    1023,
-    0,
-    250
-  );
+  updateAirspeed();
 }
 
 void updateLeds() {
 
-  if (gearState == GEAR_RETRACTED) {
+  if (retractBlockedWarning) {
+
+    if (millis() - warningStartTime >= warningDuration) {
+      retractBlockedWarning = false;
+    }
+
+    if (millis() - lastWarningBlinkTime >= warningBlinkInterval) {
+      warningLedOn = !warningLedOn;
+      lastWarningBlinkTime = millis();
+    }
+
+    digitalWrite(redLedPin, LOW);
+    digitalWrite(greenLedPin, HIGH);
+
+    if(warningLedOn) {
+      digitalWrite(yellowLedPin, HIGH);
+    }
+    else {
+      digitalWrite(yellowLedPin, LOW);
+    }
+
+  }
+
+  else if (gearState == GEAR_RETRACTED) {
 
     digitalWrite(redLedPin, HIGH);
     digitalWrite(yellowLedPin, LOW);
