@@ -102,7 +102,7 @@ void resetGearButtonPress() {
       gearServo.write(gearAngle);
 
       faultLedOn = false;
-      retrackBlockedWarning = false;
+      retractBlockedWarning = false;
       warningLedOn = false;
 
       Serial.println("FAULT RESET");
