@@ -85,31 +85,13 @@ void handleGearButtonPress() {
 void resetGearButtonPress() {
   if (gearState == GEAR_FAULT) {
 
-    if (gearAngle >= 180) {
-      gearAngle = 180;
-      gearState = GEAR_EXTENDED;
-      gearServo.write(gearAngle);
+    gearTargetAngle = 180;
+    gearState = GEAR_EXTENDING;
+    gearMoveStartTime = millis();
 
-      faultLedOn = false;
-      retractBlockedWarning = false;
-      warningLedOn = false;
+    faultLedOn = false;
 
-      Serial.println("FAULT RESET");
-    }
-    else if (gearAngle <= 0) {
-      gearAngle = 0;
-      gearState = GEAR_RETRACTED;
-      gearServo.write(gearAngle);
-
-      faultLedOn = false;
-      retractBlockedWarning = false;
-      warningLedOn = false;
-
-      Serial.println("FAULT RESET");
-    }
-    else {
-      Serial.println("RESET FAILED: GEAR POSITION UNKNOWN");
-    }
+    Serial.println("FAULT RESET: EXTENDING GEAR");
   }
 }
 
