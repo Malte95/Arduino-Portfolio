@@ -114,7 +114,7 @@ void updateGearMovement() {
       gearAngle += stepSize;
       gearServo.write(gearAngle);
 
-      Serial.println(gearAngle);
+      //Serial.println(gearAngle);
 
       if (gearAngle >= gearTargetAngle) {
 
@@ -142,7 +142,7 @@ void updateGearMovement() {
       gearAngle -= stepSize;
       gearServo.write(gearAngle);
 
-      Serial.println(gearAngle);
+      //Serial.println(gearAngle);
 
       if (gearAngle <= gearTargetAngle) {
 
@@ -165,7 +165,7 @@ void updateAirspeed() {
   speedKnots = map(potentiometerState, 0, 1023, 0, 250);
 
   if (speedKnots != lastSpeedKnots) {
-    Serial.println(speedKnots);
+    //Serial.println(speedKnots);
     lastSpeedKnots = speedKnots;
   }
 }
@@ -226,7 +226,8 @@ void updateLeds() {
     digitalWrite(greenLedPin, LOW);
 
   }
-else if (gearState == GEAR_FAULT) {
+ else if (gearState == GEAR_FAULT) {
+
   if (millis() - lastFaultBlinkTime >= faultBlinkInterval) {
     faultLedOn = !faultLedOn;
     lastFaultBlinkTime = millis();
@@ -273,9 +274,10 @@ void loop() {
   }
 
   if (lastResetButtonState == HIGH &&
-       resetButtonState == LOW) {
-        resetGearButtonPress();
-       }
+    resetButtonState == LOW) {
+
+  resetGearButtonPress();
+}
 
   updateGearMovement();
 
