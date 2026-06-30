@@ -1,5 +1,9 @@
 # Arduino Landing Gear Control System
 
+## Images
+
+![Landing Gear Control System](landing-gear-system.jpeg)
+
 ## Overview
 
 This project simulates a simplified aircraft landing gear control system using an Arduino Uno. The system combines a finite state machine, servo-controlled landing gear actuation, airspeed monitoring, fault detection, fault recovery, and visual status indication.
@@ -135,10 +139,6 @@ Potential future enhancements include:
 * Additional fault conditions
 * Advanced diagnostic information
 
----
 
-## Images
-
-![Landing Gear Control System](landing-gear-system.jpg)
 
 
