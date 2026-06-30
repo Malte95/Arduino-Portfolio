@@ -6,6 +6,8 @@ This project simulates a simplified aircraft landing gear control system using a
 
 The project was developed as an embedded systems learning project and demonstrates how hardware and software components can be integrated into a realistic control system.
 
+---
+
 ## Hardware
 
 * Arduino Uno
@@ -16,6 +18,8 @@ The project was developed as an embedded systems learning project and demonstrat
 * 3 LEDs (Red, Yellow, Green)
 * Resistors
 * Jumper Wires
+
+---
 
 ## Pin Configuration
 
@@ -28,6 +32,8 @@ The project was developed as an embedded systems learning project and demonstrat
 | Green LED            | D8          |
 | Servo Signal         | D11         |
 | Potentiometer Signal | A2          |
+
+---
 
 ## Features
 
@@ -68,6 +74,8 @@ The project was developed as an embedded systems learning project and demonstrat
 | Red + Yellow Blinking   | Gear Fault                 |
 | Green + Yellow Blinking | Retraction Blocked Warning |
 
+---
+
 ## State Machine
 
 The controller uses the following states:
@@ -77,6 +85,22 @@ The controller uses the following states:
 * `GEAR_EXTENDED`
 * `GEAR_RETRACTING`
 * `GEAR_FAULT`
+
+---
+
+## Skills Demonstrated
+
+* Embedded Systems Programming
+* Finite State Machine Design
+* Sensor Integration
+* Servo Motor Control
+* Fault Detection and Recovery
+* Safety-Critical Logic
+* Hardware Prototyping
+* Arduino Development
+* Git and GitHub Workflow
+
+---
 
 ## Testing
 
@@ -91,21 +115,30 @@ The following scenarios have been successfully tested on physical hardware:
 * Servo operation
 * Potentiometer integration
 
+---
+
 ## Project Status
 
 ✅ Version 1.0 Complete
 
-Core functionality has been implemented and validated on hardware.
+Core functionality has been implemented, tested, and validated on physical hardware.
+
+---
 
 ## Future Improvements
 
-* LCD Display Integration
-* Audible Warning System
-* Startup Self-Test
-* Additional Failure Modes
-* Improved Diagnostic Messages
+Potential future enhancements include:
+
+* LCD-based user interface
+* Audible warning system
+* Startup self-test routine
+* Additional fault conditions
+* Advanced diagnostic information
+
+---
 
 ## Images
 
-Project photos and wiring diagrams will be added here.
+![Landing Gear Control System](landing-gear-system.jpg)
+
 
